@@ -61,4 +61,20 @@ package 'redis-server' do
   action :install
 end
 
+# configuration files
 
+# elasticsearch configs
+
+template '/etc/default/elasticsearch' do
+  user 'logstash'
+  group 'logstash'
+  mode '0644'
+  notifies :restart, 'service[elasticsearch]'   #(this tells service to restart if config changes)
+end
+
+template '/etc/elasticsearch/elasticsearch.yml' do
+  user 'logstash'
+  group 'logstash'
+  mode '0644'
+  notifies :restart, 'service[elasticsearch]'   #(this tells service to restart if config changes)
+end
