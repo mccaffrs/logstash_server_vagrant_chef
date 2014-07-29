@@ -10,13 +10,13 @@ ip       = '192.168.0.42'
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
-include_recipe 'java'
-
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
-
+  
+  include_recipe 'java'
+  
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = box
 
