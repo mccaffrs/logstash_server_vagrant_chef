@@ -63,14 +63,14 @@ directory "/etc/redis-server" do
 end
 
 directory "/var/www/" do
-  user 'root'
-  group 'root'
+  user 'www-data'
+  group 'www-data'
   mode '0755'
 end
 
 directory "/var/www/kibana" do
-  user 'root'
-  group 'root'
+  user 'www-data'
+  group 'www-data'
   mode '0755'
 end
 
@@ -107,7 +107,8 @@ bash 'Kibana' do
     wget https://download.elasticsearch.org/kibana/kibana/kibana-#{node[:kibana][:version]}.tar.gz
     tar -zxf kibana-#{node[:kibana][:version]}.tar.gz
     mv kibana-#{node[:kibana][:version]}.tar.gz /tmp/
-    cp -R /opt/kibana-#{node[:kibana][:version]} /var/www/kibana
+    cp -R /opt/kibana-#{node[:kibana][:version]}/* /var/www/kibana/
+	chown -R www-data.www-data /var/www/kibana/
   EOH
 end
 
