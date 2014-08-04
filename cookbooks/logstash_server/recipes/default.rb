@@ -50,7 +50,7 @@ directory "/etc/logstash-#{node[:logstash][:version]}/" do
   mode '0755'
 end
 
-directory "/var/log/logstash-#{node[:logstash][:version]}/" do
+directory "/var/log/logstash-server/" do
   user 'logstash'
   group 'logstash'
   mode '0755'
@@ -163,6 +163,47 @@ template '/etc/nginx/sites-available/default' do
   #notifies :restart, 'service[redis-server]'   #(this tells service to restart if config changes)
 end
 
+# service starts
 
+# upstart init script
+template "logstash-server.conf" do
+  path "/etc/init/logstash-server.conf"
+  source "upstart-logstash-server.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+end
 
+# use upstart on Ubuntu
+service "logstash-server" do
+  case node["platform"]
+  when "ubuntu"
+    if node["platform_version"].to_f >= 9.10
+      provider Chef::Provider::Service::Upstart
+    end
+  end
+  action [:enable, :start]
+end
 
+# use upstart on Ubuntu to start logstash
+#service "elasticsearch" do
+#  case node["platform"]
+#  when "ubuntu"
+#    if node["platform_version"].to_f >= 9.10
+#      provider Chef::Provider::Service::Upstart
+#    end
+#  end
+#  action [:enable, :start]
+#end
+
+service "elasticsearch" do
+  action [:enable, :start]
+end
+
+service "redis-server" do
+  action [:enable, :start]
+end
+
+service "nginx" do
+  action [:enable, :start]
+end
