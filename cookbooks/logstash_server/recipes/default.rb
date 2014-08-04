@@ -174,7 +174,7 @@ template "logstash-server.conf" do
   mode "0644"
 end
 
-# use upstart on Ubuntu
+# use upstart on Ubuntu to start logstash
 service "logstash-server" do
   case node["platform"]
   when "ubuntu"
@@ -184,17 +184,6 @@ service "logstash-server" do
   end
   action [:enable, :start]
 end
-
-# use upstart on Ubuntu to start logstash
-#service "elasticsearch" do
-#  case node["platform"]
-#  when "ubuntu"
-#    if node["platform_version"].to_f >= 9.10
-#      provider Chef::Provider::Service::Upstart
-#    end
-#  end
-#  action [:enable, :start]
-#end
 
 service "elasticsearch" do
   action [:enable, :start]
